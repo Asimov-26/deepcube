@@ -115,8 +115,7 @@ int main() {
   std::ofstream file("metrics.csv");
   file << "Epoch,Target Cost,Squared Loss,Cross Entropy Loss\n";
   for (int epoch = 0; epoch < n_epoch; ++epoch) {
-    file << epoch + 1 << "," << target_costs[epoch] << "," 
-         << squared_losses[epoch] << "," << cross_entropy_losses[epoch] << "\n";
+    file << epoch + 1 << "," << target_costs[epoch] << "," << squared_losses[epoch] << "," << cross_entropy_losses[epoch] << "\n";
 }
 file.close();
 
