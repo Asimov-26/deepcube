@@ -48,11 +48,7 @@ int main() {
   std::vector<double> target_costs(n_epoch, 0.0); 
   
   double *const values = new double[n_move];
-  double cost_target, cost_v, cost_p;
-double sample_weight;
-double target_value;
-int target_idx;
-double *const values = new double[n_move];
+  
 
 for (int epoch = 0; epoch < n_epoch; ++epoch) {
     cost_target = 0.0;
