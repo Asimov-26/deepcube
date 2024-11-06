@@ -49,7 +49,7 @@ int main() {
   
   double *const values = new double[n_move];
   
-
+std::cout << "Total no of Epochs " <<n_epoch<< std::endl;
 for (int epoch = 0; epoch < n_epoch; ++epoch) {
     cost_target = 0.0;
     cost_v = 0.0;
