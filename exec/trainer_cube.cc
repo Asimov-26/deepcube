@@ -1,11 +1,12 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "cube.h"
 #include "nn_math.h"
 #include "nn_cost.h"
 #include "nn_layer.h"
 
-const int n_epoch = 1000;
+const int n_epoch = 300;
 const int n_cube = 100;
 const int n_scramble = 25;
 const double lr = 1.0 / (n_cube * n_scramble);
@@ -110,4 +111,13 @@ int main() {
   }
   delete[] values;
   
+// Save the metrics to a CSV file
+  std::ofstream file("metrics.csv");
+  file << "Epoch,Target Cost,Squared Loss,Cross Entropy Loss\n";
+  for (int epoch = 0; epoch < n_epoch; ++epoch) {
+    file << epoch + 1 << "," << target_costs[epoch] << "," 
+         << squared_losses[epoch] << "," << cross_entropy_losses[epoch] << "\n";
+}
+file.close();
+
 }
