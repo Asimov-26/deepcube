@@ -7,7 +7,7 @@
 #include "nn_layer.h"
 #include <vector> 
 
-const int n_epoch = 300;
+const int n_epoch = 1000;
 const int n_cube = 100;
 const int n_scramble = 25;
 const double lr = 1.0 / (n_cube * n_scramble);
