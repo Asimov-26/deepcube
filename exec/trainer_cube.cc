@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <fstream>
+#include <fstream
+#include <algorithm>
 #include "cube.h"
 #include "nn_math.h"
 #include "nn_cost.h"
