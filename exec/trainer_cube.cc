@@ -133,4 +133,67 @@ delete[] values;
 }
 file.close();
 
+      // --------------------- Evaluation ---------------------
+
+    // Evaluate the model on test cubes
+    double test_cost_target = 0.0;
+    double test_cost_v = 0.0;
+    double test_cost_p = 0.0;
+    int correct_policy_predictions = 0;
+
+    for (int i = 0; i < n_test; ++i) {
+        cube.init();
+        for (int j = 0; j < n_scramble; ++j) {
+            cube.rotate_random();
+            
+            // Get value prediction
+            for (int k = 0; k < n_move; ++k) {
+                Move cur_hypo_move = static_cast<Move>(k);
+                cube.get_state_hypo(cur_hypo_move, input_layer.activations);
+                dense_layer_v2.forward();
+
+                if (cube.is_solved_hypo(cur_hypo_move)) {
+                    values[k] = 1.0;
+                } else {
+                    values[k] = dense_layer_v2.activations[0] - 1.0;
+                }
+                dense_layer_v2.zero_states();
+            }
+
+            calc_max(values, n_move, &target_value, &target_idx);
+
+            // Calculate value cost (squared error)
+            cube.get_state(input_layer.activations);
+            dense_layer_v2.forward();
+            test_cost_v += squared_error_grad(dense_layer_v2.activations, target_value, dense_layer_v2.feedbacks);
+
+            // Calculate policy cost (cross-entropy loss)
+            cube.get_state(input_layer.activations);
+            dense_layer_p2.forward();
+            test_cost_p += cross_entropy_loss_grad(dense_layer_p2.activations, target_idx, n_move, dense_layer_p2.feedbacks);
+            dense_layer_p2.zero_states();
+            
+            // Count correct policy predictions (matching predicted move)
+            if (target_idx == std::distance(dense_layer_p2.activations, std::max_element(dense_layer_p2.activations, dense_layer_p2.activations + n_move))) {
+                ++correct_policy_predictions;
+            }
+        }
+    }
+
+    test_cost_target = test_cost_v + test_cost_p;
+    test_cost_v /= n_test * n_scramble;
+    test_cost_p /= n_test * n_scramble;
+
+    std::cout << "Evaluation results after " << n_epoch << " epochs:" << std::endl;
+    std::cout << "-- Test Target cost: " << test_cost_target << std::endl;
+    std::cout << "-- Test Squared loss: " << test_cost_v << std::endl;
+    std::cout << "-- Test Cross entropy loss: " << test_cost_p << std::endl;
+    std::cout << "-- Correct policy predictions: " << correct_policy_predictions << "/" << n_test * n_scramble << std::endl;
+
+    // Save evaluation results to a file for later visualization
+    std::ofstream eval_file("evaluation_results.csv");
+    eval_file << "Test,Target Cost,Squared Loss,Cross Entropy Loss,Correct Predictions\n";
+    eval_file << "Test " << n_epoch << "," << test_cost_target << "," << test_cost_v << "," << test_cost_p << "," << correct_policy_predictions << "\n";
+    eval_file.close();
+    return 0;
 }
