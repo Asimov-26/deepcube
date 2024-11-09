@@ -9,6 +9,7 @@
 
 const int n_epoch = 1000;
 const int n_cube = 100;
+const n_test=50;
 const int n_scramble = 25;
 const double lr = 1.0 / (n_cube * n_scramble);
 const std::string save_dir = "/tmp/";
