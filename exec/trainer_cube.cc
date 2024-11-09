@@ -6,6 +6,7 @@
 #include "nn_cost.h"
 #include "nn_layer.h"
 #include <vector>
+#include<algorithm>
 
 const int n_epoch = 1000;
 const int n_cube = 100;
