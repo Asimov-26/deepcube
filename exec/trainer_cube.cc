@@ -127,7 +127,7 @@ int main() {
         }
     }
 
-    delete[] values;
+    
 
     // Save the metrics to a CSV file for visualization
     std::ofstream file("metrics.csv");
@@ -199,6 +199,7 @@ int main() {
     eval_file << "Test,Target Cost,Squared Loss,Cross Entropy Loss,Correct Predictions\n";
     eval_file << "Test " << n_epoch << "," << test_cost_target << "," << test_cost_v << "," << test_cost_p << "," << correct_policy_predictions << "\n";
     eval_file.close();
+    delete[] values;
 
     return 0;
 }
