@@ -8,7 +8,7 @@
 #include <vector>
 #include<algorithm>
 
-const int n_epoch = 300;
+const int n_epoch = 1000;
 const int n_cube = 100;
 const int n_scramble = 25;
 const int n_test = 50; // Number of test cubes for evaluation
